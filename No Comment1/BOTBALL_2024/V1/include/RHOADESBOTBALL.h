@@ -1,0 +1,1 @@
+void SLOW_SERVO(int port, int speed, int final);
