@@ -15,7 +15,7 @@ int main()
     create3_wait();
     create3_drive_straight(0.645, 0.46);
     create3_wait();
-    create3_rotate_degrees(-45, 45);
+    create3_rotate_degrees(-50, 45);
     create3_wait();
     create3_drive_straight(-0.09, 0.46);
     create3_wait();
