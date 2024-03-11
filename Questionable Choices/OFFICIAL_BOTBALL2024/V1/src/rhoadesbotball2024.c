@@ -1,5 +1,20 @@
 #include <kipr/wombat.h>
 #include <math.h>
+#define PI 3.14159265359
+void PA(int am, int om, int at, double speed, double angle)
+{
+    cmpc(am);
+    double r=170;
+    double circ=2*r*PI;
+    double w_c=207;
+    double frac=angle/360;
+    printf("%f", frac);
+        while (gmpc(am)*w_c/at<circ*frac)
+        {
+            motor(am, speed);
+            motor(om, 0);
+        }
+}
 void DS(int rm, int lm, double rt, double lt, double speed,double t_c, double dist)
 {
     double w_c=207;
@@ -242,5 +257,19 @@ void LFA2(int rs, int ls, int rm, int lm, double speed, double thresh)
             msleep(100);
         }
     }
+}
+void CRC(int rm, int lm, double rmt, double lmt, int servo, int end_pos, int servo_speed)
+{
+   double arm_length;
+    double delta;
+    while(end>pos)
+        {
+            set_servo_position(port, pos+speed);
+            msleep(10);
+            if (get_servo_position(port)==pos)
+                break;
+            pos=get_servo_position(port);
+        	delta=r*cos(PI*
 
+        }
 }

@@ -19,11 +19,12 @@ int main()
     int bo=1550;
     int bc=2047;
     int bu=200;
-    int bd=1600;
+    int bd=1575;
     int fus=1;
     int fd=300;
-    int fdm=675;
+    int fdm=700;
     double speed=100;
+    SS(fus,fd, 10);
     // Calculates average sensor value for white
     int white=SC(ls);
     SS(bus, bu, 50);
@@ -92,6 +93,7 @@ int main()
     msleep(100);
     //Grabs astronauts
     SS(bos, bo, 10);
+    SS(fus,fd, 10);
     SS(bus, bd, 10);
     SS(bos, bc, 10);
     SS(bus, bu, 10);
@@ -109,7 +111,7 @@ int main()
     freeze(rm);
     freeze(lm);
     msleep(100);
-    SS(fus, fdm, 20);
+    SS(fus, fdm, 50);
     while (analog(bs)<b_thresh)
     {
         motor(lm, speed/2);
@@ -169,8 +171,8 @@ int main()
     SS(bus, bu, 10);
     while(analog(rs)>thresh)
     {
-        motor(rm, speed/2);
-        motor(lm, speed/1.5);
+        motor(rm, speed/1.5);
+        motor(lm, speed/2);
     }
     SUW(rs,ls,rm,lm,speed/4,thresh);
     freeze(rm);
@@ -186,22 +188,12 @@ int main()
         motor(rm, -speed/2);
         motor(lm, -speed/2);
     }
-    while(analog(rs)<thresh)
-    {
-        motor(rm, speed/2);
-        motor(lm, 0);
-    }
     freeze(rm);
     freeze(lm);
     msleep(100);
-    while(analog(rs)>thresh)
-    {
-        motor(rm, -speed/2);
-        motor(lm, 0);
-    }
-    motor(rm, -speed/2);
+    motor(rm, -speed);
     motor(lm, 0);
-    msleep(700);
+    msleep(1800);
     while(analog(rs)<thresh)
     {
         motor(rm, -speed/2);
@@ -248,9 +240,20 @@ int main()
         motor(lm, 0);
 
     }
+    while(analog(ls)>thresh)
+    {
+        motor(rm, 0);
+        motor(lm, -speed/2);
+    }
+    SUB(rs,ls,rm,lm,speed/4,thresh);
     freeze(rm);
     freeze(lm);
     msleep(100);
+    DS(rm, lm, rmt, lmt, -speed/2,0.5, -200);
+    freeze(rm);
+    freeze(lm);
+    msleep(100);
+    PA(lm, rm, lmt, speed/4, 45);
     return 0;
 }
 
