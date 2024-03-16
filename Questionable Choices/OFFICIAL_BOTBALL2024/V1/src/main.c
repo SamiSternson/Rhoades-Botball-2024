@@ -1,7 +1,16 @@
 #include <kipr/wombat.h>
 #include "rhoadesbotball2024.h"
 int main()
-{
+{  /* INSTRUCTIONS TO RUN THIS ROBOT:
+1) Line robot upto orange/green lines. 
+2)Make sure every thing is plugged in correctly. Right front analog sensor: port 1, Left Front analog sensor: Port 0
+Back Sensor: port 2
+Front claw servo: port 1
+back up-down servo: port2
+back open-close servo:port3
+right motor: port 2
+left motor: port 1
+*/
     // Asigns motor variables
     int rm=2;
     int lm=1;
@@ -19,10 +28,13 @@ int main()
     int bo=1550;
     int bc=2047;
     int bu=200;
-    int bd=1575;
+    int bd=1550;
     int fus=1;
-    int fd=300;
-    int fdm=700;
+    int fd=200;
+    int fdm=250;
+    int fos=0;
+    int fo=200;
+    int fc=1100;
     double speed=100;
     SS(fus,fd, 10);
     // Calculates average sensor value for white
@@ -139,7 +151,7 @@ int main()
     freeze(rm);
     freeze(lm);
     msleep(100);
-    SS(bus, 1300, 10);
+    SS(bus, 1270, 10);
     motor(rm, -speed/4);
     motor(lm, -speed/4);
     msleep(100);
@@ -191,6 +203,7 @@ int main()
     freeze(rm);
     freeze(lm);
     msleep(100);
+    //Turns to go back to start box
     motor(rm, -speed);
     motor(lm, 0);
     msleep(1800);
@@ -213,11 +226,13 @@ int main()
     motor(rm, speed);
     motor(lm, speed);
     msleep(1000);
+    //Goes back to start box
     while(analog(rs)<thresh && analog(ls)<thresh)
     {
         motor(rm, speed);
         motor(lm, speed);
     }
+    //Lines up to open airlock and grab noodles
     SUW(rs,ls,rm,lm,speed/4,thresh);
     freeze(rm);
     freeze(lm);
@@ -245,6 +260,7 @@ int main()
         motor(rm, 0);
         motor(lm, -speed/2);
     }
+    // DOes some abfgler sutff idk
     SUB(rs,ls,rm,lm,speed/4,thresh);
     freeze(rm);
     freeze(lm);
@@ -253,7 +269,40 @@ int main()
     freeze(rm);
     freeze(lm);
     msleep(100);
-    PA(lm, rm, lmt, speed/4, 45);
+    PA(lm, rm, lmt, speed/4, 40);
+    DS(rm, lm, rmt, lmt, speed/2,0.5, 10);
+    freeze(rm);
+    freeze(lm);
+    msleep(100);
+    SS(fos, bo, 10);
+    SS(bus, bd, 10);
+    DS(rm, lm, rmt, lmt, -speed/2,0.5, -50);
+    PA(lm, rm, lmt, speed/4, 5);
+    freeze(rm);
+    freeze(lm);
+    msleep(100);
+    SS(fos, fo, 20);
+    DS(rm, lm, rmt, lmt, speed/2,0.5, 150);
+    PA(rm, lm, rmt, speed/4, 2);
+    freeze(rm);
+    freeze(lm);
+    msleep(100);
+    SS(bus, 950, 10);
+    DS(rm, lm, rmt, lmt, -speed/2,0.5, -150);
+    PA(lm, rm, lmt, speed/4, 2);
+    freeze(rm);
+    freeze(lm);
+    msleep(100);
+    SS(bus, 1300, 10);
+    SS(bos, bo, 10);
+    SS(fus, 650, 20);
+    PA(rm, lm, rmt, speed/4, 2);
+    DS(rm, lm, rmt, lmt, speed/2,0.5, 150);
+    freeze(rm);
+    freeze(lm);
+    msleep(100);
+    SS(fos, fc, 20);
+    CRC(rm, lm, rmt, lmt, fus, 1200, 20);
     return 0;
 }
 

@@ -9,17 +9,17 @@ void PA(int am, int om, int at, double speed, double angle)
     double w_c=207;
     double frac=angle/360;
     printf("%f", frac);
-        while (gmpc(am)*w_c/at<circ*frac)
-        {
-            motor(am, speed);
-            motor(om, 0);
-        }
+    while (gmpc(am)*w_c/at<circ*frac)
+    {
+        motor(am, speed);
+        motor(om, 0);
+    }
 }
 void DS(int rm, int lm, double rt, double lt, double speed,double t_c, double dist)
 {
     double w_c=207;
-    double l_dist=0;
-    double r_dist=0;
+    int l_dist=0;
+    int r_dist=0;
     if (dist>0)
     {
         cmpc(rm);
@@ -100,7 +100,6 @@ void DS(int rm, int lm, double rt, double lt, double speed,double t_c, double di
             }
             l_dist = gmpc(lm) * (w_c / lt);
             r_dist = gmpc(rm) * (w_c / rt);
-            printf("%d, %d\n", l_dist, r_dist);
         }
     }
 }
@@ -156,7 +155,7 @@ int SC(int port)
 
 void SS(int port, int end, int speed)
 {
-    enable_servos();
+    enable_servo(port);
     int pos=get_servo_position(port);
     if(end>pos)
     {
@@ -258,18 +257,30 @@ void LFA2(int rs, int ls, int rm, int lm, double speed, double thresh)
         }
     }
 }
-void CRC(int rm, int lm, double rmt, double lmt, int servo, int end_pos, int servo_speed)
+void CRC(int rm, int lm, double rmt, double lmt, int servo, int end_pos, int speed)
 {
-   double arm_length;
-    double delta;
-    while(end>pos)
+    enable_servos();
+    int pos=get_servo_position(servo);
+    double r=290;
+    double keep_dist=r*cos((PI/180)*(pos-875)*0.0861328125);
+    double delta=keep_dist-r*cos((PI/180)*(pos-875)*0.0861328125);
+    double prev_delta=delta;
+    while(end_pos>pos)
+    {
+        printf("%f\n", delta);
+        set_servo_position(servo, pos+speed);
+        msleep(10);
+        pos=get_servo_position(servo);
+        delta=keep_dist-r*cos((PI/180)*(pos-650)*0.0861328125)-prev_delta;
+        prev_delta=keep_dist-r*cos((PI/180)*(pos-650)*0.0861328125);
+        /*if (delta<0)
         {
-            set_servo_position(port, pos+speed);
-            msleep(10);
-            if (get_servo_position(port)==pos)
-                break;
-            pos=get_servo_position(port);
-        	delta=r*cos(PI*
-
+            DS(rm, lm, rmt, lmt, -speed, 0.1, delta);
         }
+        else
+        {
+            DS(rm, lm, rmt, lmt, speed, 0.1, delta); 
+        }*/
+    }
+    disable_servos();
 }
