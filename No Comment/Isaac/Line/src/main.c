@@ -7,23 +7,24 @@ int main()
 {
     //Main Servo Limit 1800
     //SETUP: 45 degree rotation left from robot facing toward large space opening, 8 in. from back table corner (underneath)
-    //1550 O 750 C box servo
+    //500 O 1000 C box servo
     create3_connect();
     create3_wait();
     create3_rotate_degrees(-45, 90);
     create3_wait();
     create3_drive_straight(0.645, 0.46);
     create3_wait();
-    create3_rotate_degrees(-45, 45);
+    create3_rotate_degrees(-47, 45);
     create3_wait();
     create3_drive_straight(-0.09, 0.46);
     create3_wait();
-    servo(2, 300, 3);
+    servo(1, 1000, 1);
+    servo(2, 150, 3);
     msleep(1000);
-    create3_drive_straight(0.035, 0.05);
+    create3_drive_straight(0.04, 0.05);
     create3_wait();
     weeblewobble();
-    create3_rotate_degrees(40, 45);
+    create3_rotate_degrees(32, 45);
     servo(2, 600, 1);
     create3_drive_straight(0.15, 0.15);
     create3_wait();
@@ -33,7 +34,7 @@ int main()
     	create3_velocity_set_components(0.1, 0);
     }
     create3_execute_next_command_immediately();
-    create3_rotate_degrees(20, 45);
+    create3_rotate_degrees(25, 45);
     create3_wait();
     while (create3_sensor_bump(2) != 1) {
     	create3_velocity_set_components(0.1, 0);
