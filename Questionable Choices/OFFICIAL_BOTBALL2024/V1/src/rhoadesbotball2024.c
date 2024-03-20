@@ -103,38 +103,92 @@ void DS(int rm, int lm, double rt, double lt, double speed,double t_c, double di
         }
     }
 }
-void DECELL(int rm, int lm, double rmt, double lmt, double speed,double tc, double dist)
+void DECELL(int rm, int lm, double rt, double lt, double speed,double t_c, double dist)
 {
-    double w_d=207;
-    double lmd=0;
-    double rmd=0;
+    speed=(80/(1+exp(10/dist-5)))+20;
+    double w_c=207;
+    int l_dist=0;
+    int r_dist=0;
     if (dist>0)
     {
-        speed=(80/(1+exp(10/dist-5)))+20;
-        while(lmd<dist && rmd<dist)  
+        cmpc(rm);
+        cmpc(lm);
+        while (l_dist < dist || r_dist < dist)
         {
-            if (lmd>dist && rmd<dist)
+            if (l_dist < dist && r_dist < dist)
+            {
+                motor(lm, speed);
+                motor(rm, speed);
+            }
+            else if (l_dist >= dist && r_dist < dist)
             {
                 motor(lm, 0);
                 motor(rm, speed);
             }
-            else if (lmd<dist && rmd>dist)
+            else if (l_dist < dist && r_dist >= dist)
             {
-                motor(rm, 0);
                 motor(lm, speed);
+                motor(rm, 0);
             }
-            else if (lmd>rmd)
+            else if (l_dist - 5 > r_dist)
             {
-                motor(lm, speed*tc);
+                motor(lm, speed * t_c);
                 motor(rm, speed);
             }
-            else if (rmd>lmd)
+            else if (l_dist < r_dist - 5)
             {
-                motor(rm, speed*tc);
+                motor(rm, speed * t_c);
                 motor(lm, speed);
             }
-            lmd=gmpc(lmd)*w_d/lmt;
-            rmd=gmpc(rmd)*w_d/rmt;
+            else
+            {
+                freeze(rm);
+                freeze(lm);
+                msleep(100);
+            }
+            l_dist = gmpc(lm) * (w_c / lt);
+            r_dist = gmpc(lm) * (w_c / lt);
+        }
+    }
+    else
+    {
+        cmpc(rm);
+        cmpc(lm);
+        while (l_dist > dist || r_dist > dist)
+        {
+            if (l_dist > dist && r_dist > dist)
+            {
+                motor(lm, speed);
+                motor(rm, speed);
+            }
+            else if (l_dist <= dist && r_dist > dist)
+            {
+                motor(lm, 0);
+                motor(rm, speed);
+            }
+            else if (l_dist > dist && r_dist <= dist)
+            {
+                motor(lm, speed);
+                motor(rm, 0);
+            }
+            else if (l_dist - 5 < r_dist)
+            {
+                motor(lm, speed * t_c);
+                motor(rm, speed);
+            }
+            else if (l_dist > r_dist - 5)
+            {
+                motor(rm, speed * t_c);
+                motor(lm, speed);
+            }
+            else
+            {
+                freeze(rm);
+                freeze(lm);
+                msleep(100);
+            }
+            l_dist = gmpc(lm) * (w_c / lt);
+            r_dist = gmpc(rm) * (w_c / rt);
         }
     }
 }

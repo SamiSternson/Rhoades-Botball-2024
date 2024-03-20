@@ -25,8 +25,8 @@ left motor: port 1
     // Asigns servo variables
     int bus=2;
     int bos=3;
-    int bo=1550;
-    int bc=2047;
+    int bo=1350;
+    int bc=1780;
     int bu=200;
     int bd=1550;
     int fus=1;
@@ -260,7 +260,7 @@ left motor: port 1
         motor(rm, 0);
         motor(lm, -speed/2);
     }
-    // DOes some abfgler sutff idk
+    // DOes some abfgler sutff idrk what its doing
     SUB(rs,ls,rm,lm,speed/4,thresh);
     freeze(rm);
     freeze(lm);
@@ -269,7 +269,7 @@ left motor: port 1
     freeze(rm);
     freeze(lm);
     msleep(100);
-    PA(lm, rm, lmt, speed/4, 40);
+    PA(lm, rm, lmt, speed/4, 41);
     DS(rm, lm, rmt, lmt, speed/2,0.5, 10);
     freeze(rm);
     freeze(lm);
@@ -298,6 +298,7 @@ left motor: port 1
     SS(fus, 650, 20);
     PA(rm, lm, rmt, speed/4, 2);
     DS(rm, lm, rmt, lmt, speed/2,0.5, 150);
+    //now it will freeze
     freeze(rm);
     freeze(lm);
     msleep(100);
