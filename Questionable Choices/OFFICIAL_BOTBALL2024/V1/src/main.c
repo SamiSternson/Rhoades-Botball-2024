@@ -151,7 +151,7 @@ left motor: port 1
     freeze(rm);
     freeze(lm);
     msleep(100);
-    SS(bus, 1270, 10);
+    SS(bus, 1240, 10);
     motor(rm, -speed/4);
     motor(lm, -speed/4);
     msleep(100);
@@ -164,8 +164,8 @@ left motor: port 1
     freeze(rm);
     freeze(lm);
     msleep(100);
-    motor(rm, -speed/10);
-    motor(lm, -speed/10);
+    motor(rm, -speed/20);
+    motor(lm, -speed/20);
     msleep(2000);
     freeze(rm);
     freeze(lm);
@@ -277,7 +277,7 @@ left motor: port 1
     SS(fos, bo, 10);
     SS(bus, bd, 10);
     DS(rm, lm, rmt, lmt, -speed/2,0.5, -50);
-    PA(lm, rm, lmt, speed/4, 5);
+    PA(lm, rm, lmt, speed/4, 4);
     freeze(rm);
     freeze(lm);
     msleep(100);
@@ -294,7 +294,17 @@ left motor: port 1
     freeze(lm);
     msleep(100);
     SS(bus, 1300, 10);
-    SS(bos, bo, 10);
+    SS(bos, bo, 20);
+    int i=0;
+    while (i<10)
+    {
+        PA(lm, rm, lmt, speed/1.5, 0.5);
+        PA(rm, lm, rmt, speed/1.5, 0.5);
+        i+=1;
+    }
+    freeze(rm);
+    freeze(lm);
+    msleep(100);
     SS(fus, 650, 20);
     PA(rm, lm, rmt, speed/4, 2);
     DS(rm, lm, rmt, lmt, speed/2,0.5, 150);
