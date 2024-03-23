@@ -105,7 +105,6 @@ void DS(int rm, int lm, double rt, double lt, double speed,double t_c, double di
 }
 void DECELL(int rm, int lm, double rt, double lt, double speed,double t_c, double dist)
 {
-    speed=(80/(1+exp(10/dist-5)))+20;
     double w_c=207;
     int l_dist=0;
     int r_dist=0;
@@ -115,6 +114,7 @@ void DECELL(int rm, int lm, double rt, double lt, double speed,double t_c, doubl
         cmpc(lm);
         while (l_dist < dist || r_dist < dist)
         {
+            speed=(80/(1+exp(10/dist-5)))+20;
             if (l_dist < dist && r_dist < dist)
             {
                 motor(lm, speed);
