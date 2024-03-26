@@ -17,19 +17,26 @@ int main()
     create3_wait();
     create3_drive_straight(0.07, 0.46);
     create3_wait();
-    create3_rotate_degrees(90, 162);
+    create3_rotate_degrees(110, 162);
 	create3_wait();
-    create3_rotate_degrees(20, 162);
-    create3_wait();
     create3_drive_straight(0.30, 0.46);
     create3_wait();
     create3_rotate_degrees(-80, 162);
     create3_wait();
     while (create3_sensor_bump(4) == 0) {create3_velocity_set_components(0.1, 0);}
     create3_execute_next_command_immediately();
+    create3_drive_straight(-0.03, 0.46);
+    create3_wait();
     create3_rotate_degrees(60, 162);
     create3_wait();
-    //
+    create3_drive_straight(0.1, 0.46);
+    create3_wait();
+    create3_rotate_degrees(-90, 162);
+    create3_wait();
+    create3_drive_straight(0.035, 0.46);
+    create3_wait();
+    create3_rotate_degrees(90, 162);
+    create3_wait();
     int repeat = 1;
     while (repeat == 1) {
     	int irsense = create3_sensor_ir(6);
@@ -38,9 +45,9 @@ int main()
         msleep(10);
     }
     create3_execute_next_command_immediately();
-    create3_drive_straight(-0.10, 0.46);
+    create3_drive_straight(-0.07, 0.46);
     create3_wait();
-    create3_rotate_degrees(-7, 162);
+    create3_rotate_degrees(-8.5, 162);
     create3_wait();
     servo(0, 200, 2);
     servo(0, 1800, 2);
