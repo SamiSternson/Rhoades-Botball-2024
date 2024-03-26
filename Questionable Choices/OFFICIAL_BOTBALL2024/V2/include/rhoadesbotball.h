@@ -7,3 +7,4 @@ void DECELL(int rm, int lm, double rmt, double lmt, double speed, double tc, dou
 void SUB(int rs, int ls, int rm, int lm, int speed, int thresh);
 void LFA2(int rs, int ls, int rm, int lm, double speed, double thresh);
 void CRC(int rm, int lm, double rmt, double lmt, int servo, int end_pos, int servo_speed);
+void SPA(int am, int om, int at, double speed, double angle);

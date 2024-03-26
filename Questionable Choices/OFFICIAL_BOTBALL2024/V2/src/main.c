@@ -18,15 +18,15 @@ int main()
     int bus=1;
     int bos=0;
     int bo=1350;
-    int bc=2047;
+    int bc=2040;
     int bu=200;
-    int bd=1570;
+    int bd=1585;
     double speed=100;
     // Calculates average sensor value for white
     int white=SC(ls);
     SS(bus, bu, 50);
     // Drives to first black line
-    while(analog(rs)<white+300 || analog(ls)<white+300)
+    while(analog(rs)<white+500 || analog(ls)<white+500)
     {
         motor(rm, speed);
         motor(lm, speed);
@@ -36,24 +36,13 @@ int main()
     msleep(100);
     //Calculates threshold value
     int black=SC(ls);
-    int thresh=(black-(black-white)/2)+250;
+    int thresh=(black-(black-white)/2)+300;
     // Squares up
-    SUW(rs,ls,rm,lm,speed/4,thresh);
-    cmpc(rm);
-    cmpc(lm);
-    while(analog(rs)<thresh || analog(ls)<thresh)
-    {
-        motor(rm,speed);
-        motor(lm, speed);
-    }
-    freeze(rm);
-    freeze(lm);
-    msleep(100);
+    SUW(rs,ls,rm,lm,speed/4, thresh);	
     // Drives to middle black line
     while(analog(rs)<thresh || analog(ls)<thresh)
     {
-        motor(rm, speed);
-        motor(lm, speed);
+        DS(rm, lm, rmt, lmt, speed,0.1, 1);
     }
     motor(rm, speed);
     motor(lm, speed);
@@ -103,7 +92,7 @@ int main()
     freeze(rm);
     freeze(lm);
     msleep(100);
-    PA(rm, lm, rmt, speed/4, 5);
+    PA(rm, lm, rmt, speed/4, 6);
     freeze(rm);
     freeze(lm);
     msleep(100);
@@ -123,6 +112,9 @@ int main()
         motor(rm, speed/2);
         motor(lm, speed/2);
     }
+    motor(rm, speed);
+    motor(lm, -speed);
+    msleep(400);
     while(analog(bs)<b_thresh)
     {
         motor(rm, speed/2);
@@ -142,14 +134,14 @@ int main()
     DS(rm, lm, rmt, lmt, speed/-2,0.1, -10);
     SUB(rs,ls,rm,lm,speed/4,thresh);
     DS(rm, lm, rmt, lmt, speed/-2,0.1, -200);
-    PA(lm, rm, lmt, speed/4, 42);
+    PA(lm, rm, lmt, speed/4, 41);
     DS(rm, lm, rmt, lmt, speed/4,0.1, 60);
     freeze(rm);
     freeze(lm);
     msleep(100);
     SS(bus, 1560, 10);
     DS(rm, lm, rmt, lmt, speed/-4,0.1, -80);
-    PA(lm, rm, lmt, speed/4, 5);
+    PA(lm, rm, lmt, speed/4, 6);
     DS(rm, lm, rmt, lmt, speed/4,0.1, 170);
     PA(rm, lm, rmt, speed/4, 5);
     freeze(rm);
@@ -162,7 +154,7 @@ int main()
     freeze(lm);
     msleep(100);
     int i=0;
-    while (i<5)
+    while (i<2)
     {
         SS(bos, bo, 30);
         msleep(100);
@@ -174,5 +166,19 @@ int main()
         msleep(100);
         i+=1;
     }
+    SPA(rm,lm, rmt, speed/2, 89);
+    SPA(rm,lm, rmt, speed/2, 45);
+    while(analog(rs)<thresh ||analog(ls)<thresh)
+    {
+        DS(rm, lm, rmt, lmt, speed,0.1, 1);
+    }
+    while(analog(ls)>thresh)
+    {
+     motor(rm, 0.5*speed);
+        motor(lm, speed);
+    }
+    freeze(rm);
+    freeze(lm);
+    msleep(100);
     return 0;
 }

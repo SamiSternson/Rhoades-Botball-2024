@@ -15,6 +15,20 @@ void PA(int am, int om, int at, double speed, double angle)
         motor(om, 0);
     }
 }
+void SPA(int am, int om, int at, double speed, double angle)
+{
+    cmpc(am);
+    double r=170;
+    double circ=2*r*PI;
+    double w_c=207;
+    double frac=angle/720;
+    printf("%f", frac);
+    while (gmpc(am)*w_c/at<circ*frac)
+    {
+        motor(am, speed);
+        motor(om, -speed);
+    }
+}
 void DS(int rm, int lm, double rt, double lt, double speed,double t_c, double dist)
 {
     double w_c=207;
