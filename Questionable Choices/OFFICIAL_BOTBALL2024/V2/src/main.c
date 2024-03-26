@@ -20,7 +20,7 @@ int main()
     int bo=1350;
     int bc=2040;
     int bu=200;
-    int bd=1585;
+    int bd=1595;
     double speed=100;
     // Calculates average sensor value for white
     int white=SC(ls);
@@ -42,7 +42,7 @@ int main()
     // Drives to middle black line
     while(analog(rs)<thresh || analog(ls)<thresh)
     {
-        DS(rm, lm, rmt, lmt, speed,0.1, 1);
+        DS(rm, lm, rmt, lmt, speed,0.9, 1);
     }
     motor(rm, speed);
     motor(lm, speed);
@@ -92,7 +92,7 @@ int main()
     freeze(rm);
     freeze(lm);
     msleep(100);
-    PA(rm, lm, rmt, speed/4, 6);
+    PA(rm, lm, rmt, speed/4, 4.5);
     freeze(rm);
     freeze(lm);
     msleep(100);
@@ -114,17 +114,11 @@ int main()
     }
     motor(rm, speed);
     motor(lm, -speed);
-    msleep(400);
-    while(analog(bs)<b_thresh)
-    {
-        motor(rm, speed/2);
-        motor(lm, -speed/2);
-    }
-    while(analog(ls)<thresh)
-    {
-        motor(rm, 0);
-        motor(lm, -speed/2);
-    }
+    msleep(1000);
+    motor(rm, -speed);
+    motor(lm, -speed);
+    msleep(500);
+    SUB(rs,ls,rm,lm,speed/-2,thresh);
     SUW(rs,ls,rm,lm,speed/4,thresh);
     DECELL(rm, lm, rmt, lmt, 100.0,0.9, 625);
     SUB(rs,ls,rm,lm,speed/4,thresh);
@@ -176,6 +170,20 @@ int main()
     {
      motor(rm, 0.5*speed);
         motor(lm, speed);
+    }
+    int start_time=seconds();
+    while (seconds()-start_time<5)
+    {
+     if (analog(ls)>thresh)
+     {
+      motor(rm, speed*0.5);
+         motor(lm, speed);
+     }
+        else
+        {
+         motor(lm, speed*0.5);
+            motor(rm, speed);
+        }
     }
     freeze(rm);
     freeze(lm);
