@@ -2,6 +2,8 @@
 #include "rhoadesbotball.h"
 int main()
 { 
+    wait_for_light(5);
+    shut_down_in(119);
     // Asigns motor variables
     int rm=0;
     int lm=1;
@@ -21,7 +23,7 @@ int main()
     int rw=700;
     int rc=2047;
     int bo=1350;
-    int bc=2040;
+    int bc=2047;
     int bu=200;
     int bd=1585;
     double speed=90.0;
@@ -129,7 +131,7 @@ int main()
     }
     motor(rm, 100);
     motor(lm, -100);
-    msleep(1000);
+    msleep(1100);
     motor(rm, -speed);
     motor(lm, -speed);
     msleep(500);
@@ -150,7 +152,7 @@ int main()
     msleep(100);
     SS(bus, 1555, 10);
     DS(rm, lm, rmt, lmt, speed/-4,0.1, -80);
-    PA(lm, rm, lmt, speed/4, 6);
+    PA(lm, rm, lmt, speed/4, 7);
     DS(rm, lm, rmt, lmt, speed/4,0.1, 170);
     PA(rm, lm, rmt, speed/4, 5);
     freeze(rm);
@@ -243,21 +245,24 @@ int main()
     msleep(100);
     SS(bus, 1700, 20);
     SS(bos, bc, 20);
-    PA(lm, rm, lmt, speed/2, 45);
-    while(analog(3)<1375)
+    while(analog(3)<1350)
     {
-        if (analog(ls)<thresh)
+        if (analog(bs)<b_thresh)
         {
-            motor(rm, 0);
+            motor(rm, -speed*0.1);
             motor(lm, -speed/2);
         }
         else 
         {
-            motor(lm, 0);
+            motor(lm, -speed*0.1);
             motor(rm, -speed/2);
         }
     }
-    
+    PA(lm, rm, lmt, speed/4, 15);
+    while(analog(3)<1365)
+    {
+        DS(rm, lm, rmt, lmt, speed/-2,0.1, -1);
+    }
     freeze(rm);
     freeze(lm);
     msleep(100);
