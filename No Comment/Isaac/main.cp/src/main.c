@@ -6,15 +6,13 @@ int main()
 {
     create3_connect();
     create3_wait();
-    msleep(15000);
+    msleep(7000);
     create3_drive_straight(0.054 ,0.46);
     create3_wait();
     servo(0, 200, 2);
     msleep(1000);
     servo(0, 1800, 2);
-    create3_drive_straight(1.05, 0.46);
-    create3_wait();
-    create3_drive_straight(-0.025, 0.46);
+    create3_drive_straight(0.35, 0.46);
     create3_wait();
     create3_rotate_degrees(-90, 162);
     create3_wait();
@@ -25,6 +23,9 @@ int main()
     create3_drive_straight(-0.005, 0.46);
     create3_wait();
     create3_rotate_degrees(90, 162);
+    create3_wait();
+    servo(0, 1000, 2);
+    create3_drive_straight(0.7, 0.46);
     create3_wait();
     int state = 0;
     while (state == 0) {
@@ -56,8 +57,17 @@ int main()
         create3_rotate_degrees(-8.75, 162);
         create3_wait();
     }
+    servo(0, 1600, 2);
     servo(0, 200, 2);
     servo(0, 1800, 2);
+    create3_wait();
+    create3_rotate_degrees(98.75, 162);
+    create3_wait();
+    create3_drive_straight(0.05 ,0.46);
+    create3_wait();
+    create3_rotate_degrees(90, 162);
+    create3_wait();
+	create3_drive_straight(1, 0.46);
     create3_wait();
     return 0;
 }
