@@ -5,7 +5,7 @@ int main()
     //down 1625 up 950 to 100
     enable_servos();
     int Servo = get_servo_position(1);
-    while(Servo<1625)
+    while(Servo<1550)
     {
         set_servo_position(1,Servo);
         msleep(10);
@@ -13,13 +13,13 @@ int main()
     }
     while(analog(2)<3000)
     {
-        motor(1,-90);
-        motor(2,-40);
+        motor(0,-90);
+        motor(3,-40);
     }
     while(analog(2)>3000)
     {
-        motor(1,-40);
-        motor(2,-90);
+        motor(0,-40);
+        motor(3,-90);
     }
     msleep(300);
     freeze(1);
