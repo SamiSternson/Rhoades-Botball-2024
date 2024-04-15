@@ -24,12 +24,14 @@ int main()
     create3_drive_straight(0.5, 0.05); //prob change this dist
     create3_wait();
     int i=0;
-    int angle=30;//change this angle
+    int angle=28;//change this angle
+    create3_rotate_degrees(angle, 10); //change this angle
+    create3_wait();
     while (i<10)
     {
         STEPPER_SERVO(astro_servo, 20, au);
         angle+=i*2;
-        create3_rotate_degrees(angle, 10); //change this angle
+        create3_rotate_degrees(2, 10); //change this angle
         create3_wait();
         i+=1;
         STEPPER_SERVO(astro_servo, 20, ad);
