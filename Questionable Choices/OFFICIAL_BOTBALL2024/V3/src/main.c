@@ -1,5 +1,5 @@
 #include <kipr/wombat.h>
-#include "rhoadesbotball.h"
+#include "RHOADESBOTBALL.h"
 int rm=0;
 int lm=1;
 // Asigns motor tick variables
@@ -26,18 +26,13 @@ void SENSOR_GET();
 int white;
 int main()
 { 
-    //  wait_for_light(5);
+    wait_for_light(5);
     shut_down_in(119);
     // Asigns motor variables
     // Calculates average sensor value for white
-    thread sensor_thread = thread_create(&SENSOR_GET);
-    thread_start(sensor_thread);
+    white=SC(ls);
     SS(bus, bu, 50);
     SS(rocwac, rw, 50);
-    // Wait for the thread to actually finish
-    thread_wait(sensor_thread);
-    // Cleanup the thread
-    thread_destroy(sensor_thread);
     // Drives to first black line
     printf("%d",white);
     while(analog(rs)<white+500 || analog(ls)<white+500)
@@ -73,6 +68,7 @@ int main()
     freeze(lm);
     msleep(100);
     SS(rocwac, rc, 10);
+    SS(rocwac, rw,30);
     DS(rm, lm, rmt, lmt, speed/-2,0.1, -50);
     //Turns to get astronauts
     motor(rm, speed/2);
@@ -112,7 +108,7 @@ int main()
     freeze(rm);
     freeze(lm);
     msleep(100);
-    //PA(rm, lm, rmt, speed/4, 2);
+    PA(lm, rm, lmt, speed/4, 1);
     freeze(rm);
     freeze(lm);
     msleep(100);
@@ -138,6 +134,10 @@ int main()
         motor(lm, speed/2);
     }
     DS(rm, lm, rmt, lmt, speed/-2,0.1, -50);
+    freeze(rm);
+    freeze(lm);
+    msleep(100);
+    SS(rocwac, rc, 10);
     motor(rm, 100);
     motor(lm, -100);
     msleep(800);
@@ -154,15 +154,16 @@ int main()
     DS(rm, lm, rmt, lmt, speed/-2,0.1, -10);
     SUB(rs,ls,rm,lm,speed/4,thresh);
     DS(rm, lm, rmt, lmt, speed/-2,0.1, -220);
-    PA(lm, rm, lmt, speed/4, 46);
+    PA(lm, rm, lmt, speed/4, 45);
     DS(rm, lm, rmt, lmt, speed/4,0.1, 60);
     freeze(rm);
     freeze(lm);
     msleep(100);
-    SS(bus, 1545, 10);
+    SS(bus, 1535, 10);
     DS(rm, lm, rmt, lmt, speed/-4,0.1, -80);
-    PA(lm, rm, lmt, speed/4, 7);
+    PA(lm, rm, lmt, speed/4,8);
     DS(rm, lm, rmt, lmt, speed/4,0.1, 170);
+    DS(rm, lm, rmt, lmt, -speed/4,0.1, -5);
     PA(rm, lm, rmt, speed/4, 5);
     freeze(rm);
     freeze(lm);
@@ -177,11 +178,47 @@ int main()
     DS(rm, lm, rmt, lmt, speed/4,0.1, 40);
     SPA(rm,lm, rmt, speed/2, 89);
     SPA(rm,lm, rmt, speed/2, 45);
-    while(analog(rs)<thresh ||analog(ls)<thresh)
+    while(analog(rs)<thresh || analog(ls)<thresh)
     {
         DS(rm, lm, rmt, lmt, 90,0.1, 1);
     }
-    while(analog(ls)>thresh)
+    SUW(rs,ls,rm,lm,speed/-4,thresh);
+    motor(rm, speed/2);
+    motor(lm,-speed/2);
+    msleep(1525);
+    SUB(rs,ls,rm,lm,speed/-2,thresh);
+    freeze(rm);
+    freeze(lm);
+    SS(bus, 1550, 10);
+    SS(bos, bc, 10);
+    SS(bus, bu, 10);
+    DS(rm, lm, rmt, lmt, speed/4,0.1, 20);
+    while(analog(ls)<thresh)
+    {
+        motor(rm,0.1*speed);
+        motor(lm,speed);
+    }
+    SUW(rs,ls,rm,lm,speed/-4,thresh);
+    motor(rm, speed);
+    motor(lm,speed);
+    msleep(300);
+    freeze(rm);
+    freeze(lm);
+    msleep(100);
+    SUB(rs,ls,rm,lm,speed/-4,thresh);
+    DS(rm, lm, rmt, lmt, speed/4,0.1, 570);
+    motor(lm, -speed/2);
+    motor(rm,speed/2);
+    msleep(1550);
+    SUB(rs,ls,rm,lm,speed/-4,thresh);
+    DS(rm, lm, rmt, lmt, speed/4,0.1, 140);
+    freeze(rm);
+    freeze(lm);
+    msleep(100);
+    SS(bus, bd,10);
+    SS(bos, bo,10);
+    SS(bus,bu,10);
+    /*while(analog(ls)>thresh)
     {
         motor(rm, speed);
         motor(lm, speed);
@@ -289,7 +326,7 @@ int main()
     DS(rm, lm, rmt, lmt, -speed,0.1, -130);
     freeze(rm);
     freeze(lm);
-    msleep(100);
+    msleep(100);*/
     return 0;
 }
 void SENSOR_GET()
