@@ -35,7 +35,7 @@ int main()
     int lfthresh=lfwhite-(lfwhite-SCLF())/2;
     int rfthresh=rfwhite-(rfwhite-SCRF())/2;
     int rthresh=rwhite-(rwhite-SCR())/2;
-    SUWF(lfthresh, speed/4)
+    SUWF(lfthresh, speed/4);
     while(get_create_rfcliff_amt()>rfthresh)
     {
         LINE_FOLLOW_RIGHT_FLEFT(lfthresh, speed, 0.5);
