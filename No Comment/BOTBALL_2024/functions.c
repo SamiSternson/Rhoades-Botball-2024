@@ -1,157 +1,155 @@
 #include <kipr/wombat.h>
 #include <stdint.h>
-void SUB(int s1, int s2, int t1, int t2, float speed, float angular_speed);
-int SC(int port);
+void LINE_FOLLOW_RIGHT_LEFT( int thresh, int speed, int t_c);
+void LINE_FOLLOW_LEFT_LEFT(int thresh, int speed, int t_c);
+void LINE_FOLLOW_RIGHT_RIGHT(int thresh, int speed, int t_c);
+void LINE_FOLLOW_LEFT_RIGHT(int thresh, int speed, int t_c);
+void LINE_FOLLOW_RIGHT_FLEFT( int thresh, int speed, int t_c);
+void LINE_FOLLOW_LEFT_FLEFT(int thresh, int speed, int t_c);
+void LINE_FOLLOW_RIGHT_FRIGHT(int thresh, int speed, int t_c);
+void LINE_FOLLOW_LEFT_FRIGHT(int thresh, int speed, int t_c);
+void LINE_FOLLOW_TWO(int thresh, int speed, int t_c);
 void STEPPER_SERVO_DOWN(int port, int speed, int final);
 void STEPPER_SERVO_UP(int port, int speed, int final);
-
+void SUBF(int thresh, int speed);
+void SUBB(int thresh, int speed);
+void SUWF(int thresh, int speed);
+void SUWB(int thresh, int speed);
+void SCR();
+void SCL();
+void SCLF();
+void SCRF();
 int main()
-{
-    int astro_servo=0;
-    int solar_servo=1;
-    int au=2047;
-    int ad=525;
-    int su=2047;
-    int sd=700;
-    float speed=0.46;
-    int far_thresh;//set this value at school
-    int t1;
-    int t2;
-    int i=0;
-    create3_connect();
-    create3_wait();
-    create3_rotate_degrees(-90, 45);
-    create3_wait();
-    SUB(1, 2, t1, t2, speed/2, 10);
-    create3_drive_straight(0.15, speed);//change this dist later
-    create3_wait();
-    STEPPER_SERVO_DOWN(astro_servo, 10, ad);
-    STEPPER_SERVO_UP(astro_servo, 20, au);
-    while(create3_sensor_ir>far_thresh)
+{ 
+    create_connect();
+    int speed=200;
+    int lwhite=SCL();
+    int lfwhite=SCLF();
+    int rfwhite=SCR();
+    int rwhite=SCRF();
+    while(get_create_lfcliff_amt()>lfwhite-300 || get_create_rfcliff_amt()>rfwhite-300)
     {
-        create3_follow_wall(Create3FollowRight, 0.001);
-        if (create3_sensor_ir<far_thresh)
-        {
-            create3_velocity_set_components(0, 0);
-            create3_wait();
-        }
+        create_drive_direct(speed, speed);
     }
-    create3_rotate_degrees(-5, 10); //change this angle later
-    STEPPER_SERVO_DOWN(astro_servo, 10, ad);
-    create3_drive_straight(-0.005, -0.1);
-    create3_wait();
-    STEPPER_SERVO_UP(astro_servo, 20, au);
-    create3_drive_straight(0.01, 0.1);
-    create3_wait();
-    while(i<10)
-    {
-        create3_rotate_degrees(-1, 10); //change this angle later
-        create3_wait();
-        i+=1;
-    }
-    create3_rotate_degrees(100, 45);
-    create3_wait();
-    SUB(1, 2, t1, t2, speed/2, 10);
-    create3_drive_straight(0.15, speed);
-    create3_wait();
-    SUB(1, 2, t1, t2, speed/2, 10);
-    while(create3_sensor_bump(1)==0 && create3_sensor_bump(2)==0 )
-    {
-        create3_velocity_set_components(0.001, speed);
-        if (create3_sensor_bump(1)==1 || create3_sensor_bump(2)==1 )
-        {
-            create3_velocity_set_components(0, 0);
-            create3_wait();
-        }
-    }
-    create3_rotate_degrees(20, 20);
-    create3_wait();
-    create3_drive_straight(-0.5, -speed);
-    create3_wait();
-    create3_rotate_degrees(-20, 20);
-    create3_wait();
-    create3_drive_straight(-1, -speed);
-    create3_wait();
-    create3_rotate_degrees(-90, 45);
-    create3_wait();
-    while(create3_sensor_bump(1)==0 && create3_sensor_bump(2)==0 )
-    {
-        create3_velocity_set_components(0.001, speed);
-        if (create3_sensor_bump(1)==1 || create3_sensor_bump(2)==1 )
-        {
-            create3_velocity_set_components(0, 0);
-            create3_wait();
-        }
-    }
-    create3_rotate_degrees(-90, 45);
-    create3_wait();
-    while(create3_sensor_bump(1)==0 && create3_sensor_bump(2)==0 )
-        {
-            create3_velocity_set_components(0.001, speed);
-            if (create3_sensor_bump(1)==1 || create3_sensor_bump(2)==1 )
-            {
-                create3_velocity_set_components(0, 0);
-                create3_wait();
-            }
-        }
-        
-    create3_wait();
+    int lthresh=lwhite-(lwhite-SCL();)/2
+    int lfblack=lfwhite-(lfwhite-SCLF();)/2
+    int rfblack=rfwhite-(rfwhite-SCRF();)/2
+    int rblack=rwhite-(rwhite-SCR();)/2
+    create_disconnect();
     return 0;
 }
-void SUB(int s1, int s2, int t1, int t2, float speed, float angular_speed)
-{
-    while (create3_sensor_cliff(s1)>t1 || create3_sensor_cliff(s2)>t2)
-    {
-        if (create3_sensor_cliff(s1)>t1 && create3_sensor_cliff(s2)>t2)
-        {
-            create3_velocity_set_components(speed, 0);
-            if (create3_sensor_cliff(s1)<t1 || create3_sensor_cliff(s2)<t2)
-            {
-                create3_velocity_set_components(0, 0);
-                create3_wait();
-            }
-        }
-        else if (create3_sensor_cliff(s1)<t1 && create3_sensor_cliff(s2)>t2)
-        {
-            create3_rotate_degrees(1, angular_speed);
-            if (create3_sensor_cliff(s2)<t2)
-            {
-                create3_rotate_degrees(0, 0);
-                create3_wait();
-            }
-            
-        }
-        else if (create3_sensor_cliff(s1)>t1 && create3_sensor_cliff(s2)<t2)
-        {
-            create3_rotate_degrees(-1, angular_speed);
-            if (create3_sensor_cliff(s1)<t1)
-            {
-                create3_rotate_degrees(0, 0);
-                create3_wait();
-            }
-            
-        }
-        else
-        {
-            create3_velocity_set_components(0, 0);
-            create3_wait();
-        }
 
+void LINE_FOLLOW_RIGHT_LEFT(int thresh, int speed, int t_c)
+{
+    if (get_create_lcliff_amt()>thresh)
+    {
+        create_drive_direct(speed*t_c, speed);
+    }
+    else
+    {
+       create_drive_direct(speed, speed*t_c); 
     }
 }
-int SC(int port)
+
+void LINE_FOLLOW_LEFT_LEFT(int thresh, int speed, int t_c)
 {
-    int i=0;
-    int num=0;
-    while(i<50)
+    if (get_create_lcliff_amt()<thresh)
     {
-        num+=create3_sensor_cliff(port);
-        i+=1;
+        create_drive_direct(speed*t_c, speed);
     }
-    int avg=num/50
-    return avg;
+    else
+    {
+       create_drive_direct(speed, speed*t_c); 
+    }
 }
 
+void LINE_FOLLOW_RIGHT_RIGHT(int thresh, int speed, int t_c)
+{
+    if (get_create_rcliff_amt()>thresh)
+    {
+        create_drive_direct(speed*t_c, speed);
+    }
+    else
+    {
+       create_drive_direct(speed, speed*t_c); 
+    }
+}
+
+void LINE_FOLLOW_LEFT_RIGHT(int thresh, int speed, int t_c)
+{
+    if (get_create_rcliff_amt()<thresh)
+    {
+        create_drive_direct(speed*t_c, speed);
+    }
+    else
+    {
+       create_drive_direct(speed, speed*t_c); 
+    }
+}
+//
+void LINE_FOLLOW_RIGHT_FLEFT(int thresh, int speed, int t_c)
+{
+    if (get_create_lfcliff_amt()>thresh)
+    {
+        create_drive_direct(speed*t_c, speed);
+    }
+    else
+    {
+       create_drive_direct(speed, speed*t_c); 
+    }
+}
+
+void LINE_FOLLOW_LEFT_FLEFT(int thresh, int speed, int t_c)
+{
+    if (get_create_lfcliff_amt()<thresh)
+    {
+        create_drive_direct(speed*t_c, speed);
+    }
+    else
+    {
+       create_drive_direct(speed, speed*t_c); 
+    }
+}
+
+void LINE_FOLLOW_RIGHT_FRIGHT(int thresh, int speed, int t_c)
+{
+    if (get_create_rfcliff_amt()>thresh)
+    {
+        create_drive_direct(speed*t_c, speed);
+    }
+    else
+    {
+       create_drive_direct(speed, speed*t_c); 
+    }
+}
+
+void LINE_FOLLOW_LEFT_FRIGHT(int thresh, int speed, int t_c)
+{
+    if (get_create_rfcliff_amt()<thresh)
+    {
+        create_drive_direct(speed*t_c, speed);
+    }
+    else
+    {
+       create_drive_direct(speed, speed*t_c); 
+    }
+}
+
+void LINE_FOLLOW_TWO(int thresh, int speed, int t_c)
+{
+    if (get_create_lfcliff_amt()>thresh && get_create_rfcliff_amt()>thresh)
+    {
+        create_drive_direct(speed, speed);
+    }
+    else if (get_create_lfcliff_amt()<thresh && get_create_rfcliff_amt()>thresh)
+    {
+        create_drive_direct(speed*t_c, speed);
+    }
+    else if (get_create_lfcliff_amt()>thresh && get_create_rfcliff_amt()<thresh)
+    {
+        create_drive_direct(speed, speed*t_c);
+    }
+}
 void STEPPER_SERVO_DOWN(int port, int speed, int final)
 {
     enable_servo(port);
@@ -178,4 +176,141 @@ void STEPPER_SERVO_UP(int port, int speed, int final)
     }
     set_servo_position(port, final);
     msleep(10);
+}
+void SUBF(int thresh, int speed)
+{
+    while(get_create_lfcliff_amt()>thresh || get_create_rfcliff_amt()>thresh)
+    {
+        if (get_create_lfcliff_amt()>thresh && get_create_rfcliff_amt()>thresh)
+        {
+            create_drive_direct(speed, speed);
+        }
+        else if (get_create_lfcliff_amt()<thresh && get_create_rfcliff_amt()>thresh)
+        {
+            create_drive_direct(-speed, speed);
+        }
+        else if (get_create_lfcliff_amt()>thresh && get_create_rfcliff_amt()<thresh)
+        {
+            create_drive_direct(speed, -speed);
+        }
+        else
+        {
+            create_drive_direct(0, 0);
+        }
+    }
+}
+void SUBB(int thresh, int speed)
+{
+    while(get_create_lcliff_amt()>thresh || get_create_rcliff_amt()>thresh)
+    {
+        if (get_create_lcliff_amt()>thresh && get_create_rcliff_amt()>thresh)
+        {
+            create_drive_direct(speed, speed);
+        }
+        else if (get_create_lcliff_amt()<thresh && get_create_rcliff_amt()>thresh)
+        {
+            create_drive_direct(-speed, speed);
+        }
+        else if (get_create_lcliff_amt()>thresh && get_create_rcliff_amt()<thresh)
+        {
+            create_drive_direct(speed, -speed);
+        }
+        else
+        {
+            create_drive_direct(0, 0);
+        }
+    }
+}
+void SUWF(int thresh, int speed)
+{
+    while(get_create_lfcliff_amt()<thresh || get_create_rfcliff_amt()<thresh)
+    {
+        if (get_create_lfcliff_amt()<thresh && get_create_rfcliff_amt()<thresh)
+        {
+            create_drive_direct(speed, speed);
+        }
+        else if (get_create_lfcliff_amt()>thresh && get_create_rfcliff_amt()<thresh)
+        {
+            create_drive_direct(-speed, speed);
+        }
+        else if (get_create_lfcliff_amt()<thresh && get_create_rfcliff_amt()>thresh)
+        {
+            create_drive_direct(speed, -speed);
+        }
+        else
+        {
+            create_drive_direct(0, 0);
+        }
+    }
+}
+void SUWB(int thresh, int speed)
+{
+    while(get_create_lcliff_amt()<thresh || get_create_rcliff_amt()<thresh)
+    {
+        if (get_create_lcliff_amt()<thresh && get_create_rcliff_amt()<thresh)
+        {
+            create_drive_direct(speed, speed);
+        }
+        else if (get_create_lcliff_amt()<thresh && get_create_rcliff_amt()>thresh)
+        {
+            create_drive_direct(-speed, speed);
+        }
+        else if (get_create_lcliff_amt()<thresh && get_create_rcliff_amt()>thresh)
+        {
+            create_drive_direct(speed, -speed);
+        }
+        else
+        {
+            create_drive_direct(0, 0);
+        }
+    }
+}
+
+void SCR()
+{
+    int i=0;
+    int num=0;
+    while (i<50)
+    {
+        num+=get_create_rcliff_amt();
+        i+=1;
+    }
+    int avg=num/50;
+    return avg
+}
+void SCL()
+{
+    int i=0;
+    int num=0;
+    while (i<50)
+    {
+        num+=get_create_lcliff_amt();
+        i+=1;
+    }
+    int avg=num/50;
+    return avg
+}
+void SCRF()
+{
+    int i=0;
+    int num=0;
+    while (i<50)
+    {
+        num+=get_create_rfcliff_amt();
+        i+=1;
+    }
+    int avg=num/50;
+    return avg
+}
+void SCLF()
+{
+    int i=0;
+    int num=0;
+    while (i<50)
+    {
+        num+=get_create_lfcliff_amt();
+        i+=1;
+    }
+    int avg=num/50;
+    return avg
 }
