@@ -31,10 +31,12 @@ int main()
     {
         create_drive_direct(speed, speed);
     }
-    int lthresh=lwhite-(lwhite-SCL();)/2
-    int lfblack=lfwhite-(lfwhite-SCLF();)/2
-    int rfblack=rfwhite-(rfwhite-SCRF();)/2
-    int rblack=rwhite-(rwhite-SCR();)/2
+    int lthresh=lwhite-(lwhite-SCL())/2;
+    int lfthresh=lfwhite-(lfwhite-SCLF())/2;
+    int rfthresh=rfwhite-(rfwhite-SCRF())/2;
+    int rthresh=rwhite-(rwhite-SCR())/2;
+    SUWF(lfthresh, speed/4)
+    LINE_FOLLOW_RIGHT_FLEFT(lfthresh, speed, 0.2);
     create_disconnect();
     return 0;
 }
