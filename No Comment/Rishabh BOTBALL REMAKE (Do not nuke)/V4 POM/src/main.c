@@ -9,59 +9,53 @@ int main()
     servo(0, 2000, 2047);
     motor(0,70);
     motor(2,0);       // lower claw to scoop the poms
-    msleep(300);
+    msleep(500);
     while(digital(1)==0 && digital(2)==0)
     {
         motor(0,20);
         motor(2,20);
         while(digital(1)==0 && digital(2) == 1)
         {
-            motor(2,0);
             motor(0,20);
+            motor(2,0);
         }
         while(digital(1) == 1 && digital(2) == 0)
         {
-            motor(2,20);
             motor(0,0);
+            motor(2,20);
         }
     }
-    motor(0,70);
+    /*motor(0,70);
     motor(2,0);       // lower claw to scoop the poms
-    msleep(500);
+    msleep(500);*/
     freeze(0);
     freeze(2);
-    while(DROP<3)                    // keep  going  back  and  forth to get the poms.
+    while(DROP<10)
     {
+        freeze(0);
+        freeze(2);
+        servo(3, 2000, 1990);
+        motor(0,-100);
+        motor(2,-100);
+        msleep(1500);
+        while(digital(1)==0 && digital(2)==0)
+        {
+            motor(0,20);
+            motor(2,20);
+            while(digital(1)==0 && digital(2) == 1)
+            {
+                motor(0,0);
+                motor(2,20);
+            }
+            while(digital(1) == 1 && digital(2) == 0)
+            {
+                motor(0,20);
+                motor(2,0);
+            }
+        }
         motor(0,0);
         motor(2,20);
-        msleep(300);
-        freeze(0);
-        freeze(2);
-        servo(3, 2000, 1990);
-        motor(0,-100);
-        motor(2,-100);
-        msleep(1500);
-        freeze(0);
-        freeze(2);
-        servo(3, 2000, 1070);
-        motor(0,100);
-        motor(2,100);
-        msleep(1500);
-        motor(0,20);
-        motor(2,0);
-        msleep(300);
-        freeze(0);
-        freeze(2);
-        servo(3, 2000, 1990);
-        motor(0,-100);
-        motor(2,-100);
-        msleep(1500);
-        freeze(0);
-        freeze(2);
-        servo(3, 2000, 1070);
-        motor(0,100);
-        motor(2,100);
-        msleep(1500);
+        msleep(50);
         DROP = DROP + 1;
     }
     return 0;

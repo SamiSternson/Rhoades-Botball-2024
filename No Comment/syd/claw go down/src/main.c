@@ -2,9 +2,9 @@
 
 int main()
 {
-    int STEP=1000;  //intialize your servo stepper to the top position????
+    int STEP=100;  //intialize your servo stepper to the top position????
     enable_servos();
-    set_servo_position(0,1500);
+    set_servo_position(0,100);
     msleep(200);
     disable_servos(); 
 
@@ -18,11 +18,11 @@ int main()
     ao();
 
     enable_servos();
-    while(STEP > 300)
+    while(STEP < 1600)
     {
         set_servo_position(0,STEP);
         msleep(50);
-        STEP=STEP-10;
+        STEP=STEP+10;
     }
     disable_servos();
 
